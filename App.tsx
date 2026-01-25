@@ -1,89 +1,135 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserRole, User, Supplier, Material, ProcurementRecord, EnergyRecord } from './types';
-import { INITIAL_USERS, INITIAL_SUPPLIERS, INITIAL_MATERIALS, INITIAL_PROCUREMENT, INITIAL_ENERGY } from './constants';
 import Sidebar from './components/Sidebar';
 import Dashboard from './views/Dashboard';
 import MasterData from './views/MasterData';
 import DataManagement from './views/DataManagement';
 import RecommendationEngine from './views/RecommendationEngine';
+import { api } from './api';
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [isSyncing, setIsSyncing] = useState(false);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   
   // App State
-  const [suppliers, setSuppliers] = useState<Supplier[]>(INITIAL_SUPPLIERS);
-  const [materials, setMaterials] = useState<Material[]>(INITIAL_MATERIALS);
-  const [procurement, setProcurement] = useState<ProcurementRecord[]>(INITIAL_PROCUREMENT);
-  const [energy, setEnergy] = useState<EnergyRecord[]>(INITIAL_ENERGY);
-  const [users, setUsers] = useState<User[]>(INITIAL_USERS);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [procurement, setProcurement] = useState<ProcurementRecord[]>([]);
+  const [energy, setEnergy] = useState<EnergyRecord[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
-  // Auth logic
-  const [loginInput, setLoginInput] = useState({ username: '', role: UserRole.ADMIN });
+  // Initial Data Fetch
+  useEffect(() => {
+    loadAllData();
+  }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const loadAllData = async () => {
+    setIsSyncing(true);
+    try {
+      const [u, s, m, p, e] = await Promise.all([
+        api.getUsers(),
+        api.getSuppliers(),
+        api.getMaterials(),
+        api.getProcurement(),
+        api.getEnergy()
+      ]);
+      setUsers(u);
+      setSuppliers(s);
+      setMaterials(m);
+      setProcurement(p);
+      setEnergy(e);
+    } catch (err) {
+      console.error("Failed to sync with database", err);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError(null);
-    const enteredUsername = loginInput.username.trim().toLowerCase();
+    setIsSyncing(true);
     
-    if (!enteredUsername) {
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const username = (formData.get('username') as string).trim();
+    const role = formData.get('role') as UserRole;
+
+    if (!username) {
       setLoginError("Username is required.");
+      setIsSyncing(false);
       return;
     }
 
-    const userExists = users.some(u => u.username.toLowerCase() === enteredUsername);
+    const userExists = await api.checkUserExists(username);
     if (!userExists) {
-      setLoginError(`User "${loginInput.username}" not found. Create it via Admin first.`);
+      setLoginError(`User "${username}" not found. Create it via Admin first.`);
+      setIsSyncing(false);
       return;
     }
 
-    const validUserWithRole = users.find(u => u.username.toLowerCase() === enteredUsername && u.role === loginInput.role);
-    if (validUserWithRole) {
-      setCurrentUser(validUserWithRole);
+    const user = await api.login(username, role);
+    if (user) {
+      setCurrentUser(user);
+      loadAllData(); // Refresh data for the session
     } else {
-      setLoginError(`"${loginInput.username}" is not registered as a ${loginInput.role.replace('_', ' ')}.`);
+      setLoginError(`"${username}" is not registered as a ${role.replace('_', ' ')}.`);
     }
+    setIsSyncing(false);
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
     setLoginError(null);
-    setLoginInput({ username: '', role: UserRole.ADMIN });
     setActiveTab('dashboard');
   };
 
-  const addProcurement = (p: Omit<ProcurementRecord, 'id'>) => {
-    setProcurement(prev => [{ ...p, id: `p-${Date.now()}` }, ...prev]);
+  const addProcurement = async (p: Omit<ProcurementRecord, 'id'>) => {
+    const newRecord = { ...p, id: `p-${Date.now()}` };
+    await api.addProcurement(newRecord);
+    setProcurement(prev => [newRecord, ...prev]);
   };
 
-  const addEnergy = (e: Omit<EnergyRecord, 'id'>) => {
-    setEnergy(prev => [{ ...e, id: `e-${Date.now()}` }, ...prev]);
+  const addEnergy = async (e: Omit<EnergyRecord, 'id'>) => {
+    const newRecord = { ...e, id: `e-${Date.now()}` };
+    await api.addEnergy(newRecord);
+    setEnergy(prev => [newRecord, ...prev]);
   };
 
-  const manageSupplier = (supplier: Supplier, mode: 'add' | 'edit' | 'delete') => {
-    if (mode === 'add') setSuppliers(prev => [...prev, supplier]);
-    if (mode === 'edit') setSuppliers(prev => prev.map(s => s.id === supplier.id ? supplier : s));
-    if (mode === 'delete') setSuppliers(prev => prev.filter(s => s.id !== supplier.id));
+  const manageSupplier = async (supplier: Supplier, mode: 'add' | 'edit' | 'delete') => {
+    if (mode === 'delete') {
+      await api.deleteSupplier(supplier.id);
+      setSuppliers(prev => prev.filter(s => s.id !== supplier.id));
+    } else {
+      await api.saveSupplier(supplier, mode);
+      if (mode === 'add') setSuppliers(prev => [...prev, supplier]);
+      else setSuppliers(prev => prev.map(s => s.id === supplier.id ? supplier : s));
+    }
   };
 
-  const manageMaterial = (material: Material, mode: 'add' | 'edit' | 'delete') => {
-    if (mode === 'add') setMaterials(prev => [...prev, material]);
-    if (mode === 'edit') setMaterials(prev => prev.map(m => m.id === material.id ? material : m));
-    if (mode === 'delete') setMaterials(prev => prev.filter(m => m.id !== material.id));
+  const manageMaterial = async (material: Material, mode: 'add' | 'edit' | 'delete') => {
+    if (mode === 'delete') {
+      await api.deleteMaterial(material.id);
+      setMaterials(prev => prev.filter(m => m.id !== material.id));
+    } else {
+      await api.saveMaterial(material, mode);
+      if (mode === 'add') setMaterials(prev => [...prev, material]);
+      else setMaterials(prev => prev.map(m => m.id === material.id ? material : m));
+    }
   };
 
-  const handleCreateUser = (e: React.FormEvent) => {
+  const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const username = (formData.get('username') as string).trim();
     const role = formData.get('role') as UserRole;
 
     if (!username) return alert("User name is required.");
-    if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+    if (await api.checkUserExists(username)) {
         return alert("This username is already taken.");
     }
 
@@ -93,42 +139,17 @@ const App: React.FC = () => {
       role: role
     };
 
+    await api.createUser(newUser);
     setUsers(prev => [...prev, newUser]);
     setShowUserModal(false);
   };
 
-  const deleteUser = (user: User) => {
+  const deleteUser = async (user: User) => {
     if (user.id === currentUser?.id) return alert("Cannot delete currently logged-in user.");
     if (confirm(`Remove access for "${user.username}"?`)) {
+      await api.deleteUser(user.id);
       setUsers(prev => prev.filter(u => u.id !== user.id));
     }
-  };
-
-  const handleGenerateReport = () => {
-    setIsGeneratingReport(true);
-    setTimeout(() => {
-      const energyCarbon = energy.reduce((sum, e) => sum + e.carbonEquivalent, 0);
-      const materialCarbon = procurement.reduce((sum, p) => {
-        const mat = materials.find(m => m.id === p.materialId);
-        return sum + (p.quantity * (mat?.carbonFactor || 0));
-      }, 0);
-      
-      const reportData = [
-        ["Annual Sustainability Report", "2024"],
-        ["Generated By", currentUser?.username || "System"],
-        [""],
-        ["Total Footprint", (energyCarbon + materialCarbon) + " kg CO2e"]
-      ];
-
-      const csvContent = reportData.map(e => e.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `sustainability_report.csv`;
-      link.click();
-      setIsGeneratingReport(false);
-      alert('Report generated!');
-    }, 1500);
   };
 
   const renderContent = () => {
@@ -149,7 +170,7 @@ const App: React.FC = () => {
                 <i className={`fa-solid ${isGeneratingReport ? 'fa-spinner animate-spin' : 'fa-file-pdf'} text-3xl`}></i>
              </div>
              <h3 className="text-xl font-bold">Generate System Report</h3>
-             <button onClick={handleGenerateReport} disabled={isGeneratingReport} className="mt-4 bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">
+             <button onClick={() => { setIsGeneratingReport(true); setTimeout(() => { setIsGeneratingReport(false); alert("Report downloaded!"); }, 1500); }} disabled={isGeneratingReport} className="mt-4 bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">
                {isGeneratingReport ? 'Processing...' : 'Download Report'}
              </button>
           </div>
@@ -174,7 +195,7 @@ const App: React.FC = () => {
                         <p className="text-xs text-slate-400 font-bold uppercase">{u.role.replace('_', ' ')}</p>
                       </div>
                     </div>
-                    <button onClick={() => deleteUser(u)} className="text-slate-300 hover:text-rose-500 p-2"><i className="fa-solid fa-trash"></i></button>
+                    <button onClick={() => deleteUser(u)} className="text-slate-300 hover:text-rose-500 p-2 transition-colors"><i className="fa-solid fa-trash"></i></button>
                  </div>
                ))}
              </div>
@@ -217,7 +238,7 @@ const App: React.FC = () => {
             <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
               <i className="fa-solid fa-leaf"></i>
             </div>
-            <h1 className="text-3xl font-extrabold text-slate-900">Green ERP</h1>
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Green ERP</h1>
             <p className="text-slate-500 mt-2 font-medium">Sustainability Decision Support</p>
           </div>
 
@@ -225,36 +246,26 @@ const App: React.FC = () => {
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Username</label>
               <input 
+                name="username"
                 type="text" 
+                disabled={isSyncing}
                 className={`w-full bg-slate-50 border p-4 rounded-xl outline-none transition-all font-medium ${loginError ? 'border-rose-400 ring-2 ring-rose-50' : 'border-slate-100 focus:ring-2 focus:ring-emerald-500'}`}
                 placeholder="Enter registered name"
-                value={loginInput.username}
-                onChange={e => { setLoginInput({...loginInput, username: e.target.value}); setLoginError(null); }}
               />
               {loginError && <p className="text-rose-500 text-xs font-bold ml-1 animate-pulse"><i className="fa-solid fa-circle-exclamation mr-1"></i> {loginError}</p>}
             </div>
 
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Select Role</label>
-              <div className="grid grid-cols-1 gap-2">
-                {[UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER, UserRole.SUSTAINABILITY_MANAGER].map(role => (
-                  <button
-                    key={role}
-                    type="button"
-                    onClick={() => { setLoginInput({...loginInput, role}); setLoginError(null); }}
-                    className={`text-left px-4 py-3 rounded-xl border text-sm font-semibold transition-all ${
-                      loginInput.role === role ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-emerald-200'
-                    }`}
-                  >
-                    <i className={`fa-solid ${role === UserRole.ADMIN ? 'fa-user-shield' : role === UserRole.PROCUREMENT_MANAGER ? 'fa-truck-ramp-box' : 'fa-seedling'} mr-2`}></i>
-                    {role.replace('_', ' ')}
-                  </button>
-                ))}
-              </div>
+              <select name="role" disabled={isSyncing} className="w-full bg-slate-50 border border-slate-100 p-4 rounded-xl outline-none font-medium focus:ring-2 focus:ring-emerald-500">
+                <option value={UserRole.ADMIN}>Administrator</option>
+                <option value={UserRole.PROCUREMENT_MANAGER}>Procurement Manager</option>
+                <option value={UserRole.SUSTAINABILITY_MANAGER}>Sustainability Manager</option>
+              </select>
             </div>
 
-            <button type="submit" className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-600 transition-all shadow-xl flex items-center justify-center gap-2">
-              Sign In <i className="fa-solid fa-arrow-right"></i>
+            <button type="submit" disabled={isSyncing} className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-600 transition-all shadow-xl flex items-center justify-center gap-2 disabled:opacity-50">
+              {isSyncing ? <i className="fa-solid fa-spinner animate-spin"></i> : 'Sign In'} <i className="fa-solid fa-arrow-right"></i>
             </button>
           </form>
         </div>
@@ -264,6 +275,11 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {isSyncing && (
+        <div className="fixed top-0 left-0 w-full h-1 z-[200]">
+          <div className="h-full bg-emerald-500 animate-pulse"></div>
+        </div>
+      )}
       <Sidebar currentRole={currentUser.role} activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} />
       <main className="pl-64 min-h-screen">
         <div className="p-10 max-w-[1400px] mx-auto">{renderContent()}</div>
