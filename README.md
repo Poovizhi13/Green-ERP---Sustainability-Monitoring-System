@@ -1,20 +1,69 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Green ERP – Sustainability Monitoring System
 
-# Run and deploy your AI Studio app
+![Sustainability](https://img.shields.io/badge/Sustainability-Emerald-success)
+![AI Powered](https://img.shields.io/badge/AI-Gemini%203.1-blue)
+![Status](https://img.shields.io/badge/Status-Production--Ready-brightgreen)
 
-This contains everything you need to run your app locally.
+**Green ERP** is an AI-driven enterprise decision support system designed to help organizations monitor, analyze, and optimize their environmental impact. By integrating real-time data with advanced AI simulations, it empowers businesses to reach "Net Zero" targets while maintaining financial profitability.
 
-View your app in AI Studio: https://ai.studio/apps/727071f8-a241-45f3-bafb-683d872d8e6d
+## 🚀 Key Features
 
-## Run Locally
+### 📊 Executive Dashboard
+* **Real-Time KPIs:** Monitor Gross Carbon Footprint (Scope 1, 2, & 3), Supply Chain ESG Health, and Circular Economy rates.
+* **Impact Attribution:** Visual breakdown of emissions by source (Energy vs. Supply Chain).
+* **Calculation Logic:** Transparent formulas to ensure audit readiness and trust.
 
-**Prerequisites:**  Node.js
+### 🤖 AI Sustainability Advisor
+* **Gemini 3.1 Integration:** A conversational expert that analyzes your specific data to provide tailored reduction strategies.
+* **Context-Aware:** Understands your unique suppliers and materials to give precise advice.
 
+### 🧪 Scenario Simulator ("What-If" Analysis)
+* **Strategy Modeling:** Test the impact of energy reductions or material switches before implementation.
+* **Financial Trade-offs:** See the projected cost impact alongside carbon savings.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 🔮 Carbon Forecasting
+* **Predictive Trajectory:** 6-month AI-driven forecasts to proactively manage environmental targets.
+* **Confidence Intervals:** Statistical certainty levels for future projections.
+
+### 🗺️ Geospatial Supply Chain Map
+* **Global Visualization:** Interactive map plotting all vendors with ESG color-coding.
+* **Logistics Analysis:** Identify transport-related carbon risks and local sourcing opportunities.
+
+### 📝 Executive Reporting
+* **Audit-Ready Reports:** Automated generation of sustainability summaries.
+* **Live Preview:** Real-time document preview before exporting to `.txt` format.
+
+## 🛠️ Tech Stack
+* **Frontend:** React, TypeScript, Tailwind CSS
+* **Animations:** Framer Motion
+* **Charts:** Recharts
+* **Maps:** Leaflet.js
+* **AI Engine:** Google Gemini 3.1 Pro
+* **Icons:** Lucide React / FontAwesome
+
+## ⚙️ Setup & Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/green-erp.git
+   cd green-erp
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Variables:**
+   Create a `.env` file and add your Gemini API Key:
+   ```env
+   GEMINI_API_KEY=your_api_key_here
+   ```
+
+4. **Run the application:**
+   ```bash
+   npm run dev
+   ```
+
+## 📄 License
+This project is licensed under the MIT License.
