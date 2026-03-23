@@ -1,14 +1,16 @@
 
 import React, { useMemo, useState } from 'react';
-import { Supplier, Material, ProcurementRecord, Recommendation } from '../types';
+import { Supplier, Material, ProcurementRecord, Recommendation, EnergyRecord } from '../types';
+import AISuggestionPanel from '../components/AISuggestionPanel';
 
 interface RecommendationEngineProps {
   suppliers: Supplier[];
   materials: Material[];
   procurement: ProcurementRecord[];
+  energy: EnergyRecord[];
 }
 
-const RecommendationEngine: React.FC<RecommendationEngineProps> = ({ suppliers, materials, procurement }) => {
+const RecommendationEngine: React.FC<RecommendationEngineProps> = ({ suppliers, materials, procurement, energy }) => {
   const [applying, setApplying] = useState<string | null>(null);
 
   const recommendations = useMemo(() => {
@@ -55,6 +57,13 @@ const RecommendationEngine: React.FC<RecommendationEngineProps> = ({ suppliers, 
         <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Recommendation Engine</h2>
         <p className="text-slate-500 dark:text-slate-400 mt-1 font-medium">Algorithmic suggestions for circular economy transition.</p>
       </header>
+
+      <AISuggestionPanel 
+        suppliers={suppliers} 
+        materials={materials} 
+        procurement={procurement} 
+        energy={energy} 
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {recommendations.length > 0 ? recommendations.map(rec => (

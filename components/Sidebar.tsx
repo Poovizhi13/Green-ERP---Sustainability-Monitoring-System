@@ -14,11 +14,16 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, setActiveTab, onLogout, theme, onToggleTheme }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'fa-chart-line', roles: [UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER, UserRole.SUSTAINABILITY_MANAGER] },
+    { id: 'ai-advisor', label: 'AI Advisor', icon: 'fa-robot', roles: [UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER, UserRole.SUSTAINABILITY_MANAGER] },
+    { id: 'carbon-forecast', label: 'Carbon Forecast', icon: 'fa-arrow-trend-up', roles: [UserRole.ADMIN, UserRole.SUSTAINABILITY_MANAGER] },
+    { id: 'scenario-simulation', label: 'Scenario Simulator', icon: 'fa-vial-circle-check', roles: [UserRole.ADMIN, UserRole.SUSTAINABILITY_MANAGER] },
+    { id: 'supply-chain-map', label: 'Supply Chain Map', icon: 'fa-earth-americas', roles: [UserRole.ADMIN, UserRole.SUSTAINABILITY_MANAGER] },
     { id: 'master-data', label: 'Master Data', icon: 'fa-database', roles: [UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER] },
     { id: 'data-management', label: 'Data Input', icon: 'fa-file-import', roles: [UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER, UserRole.SUSTAINABILITY_MANAGER] },
     { id: 'recommendations', label: 'Smart Insights', icon: 'fa-lightbulb', roles: [UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER, UserRole.SUSTAINABILITY_MANAGER] },
     { id: 'reports', label: 'Reports', icon: 'fa-file-contract', roles: [UserRole.ADMIN, UserRole.SUSTAINABILITY_MANAGER] },
     { id: 'users', label: 'Users', icon: 'fa-users-cog', roles: [UserRole.ADMIN] },
+    { id: 'settings', label: 'Settings', icon: 'fa-gear', roles: [UserRole.ADMIN, UserRole.PROCUREMENT_MANAGER, UserRole.SUSTAINABILITY_MANAGER] },
   ];
 
   const filteredItems = menuItems.filter(item => item.roles.includes(currentRole));

@@ -8,10 +8,10 @@ export const INITIAL_USERS: User[] = [
 ];
 
 export const INITIAL_SUPPLIERS: Supplier[] = [
-  { id: 's1', name: 'Eco-Dynamics Ltd', category: 'Raw Materials', sustainabilityScore: 88, carbonEfficiency: 12.5, certifications: ['ISO 14001', 'LEED'] },
-  { id: 's2', name: 'Global Logistics Corp', category: 'Packaging', sustainabilityScore: 45, carbonEfficiency: 48.2, certifications: [] },
-  { id: 's3', name: 'GreenSource Solutions', category: 'Raw Materials', sustainabilityScore: 92, carbonEfficiency: 8.4, certifications: ['B-Corp', 'Carbon Trust'] },
-  { id: 's4', name: 'Standard Parts Inc', category: 'Components', sustainabilityScore: 62, carbonEfficiency: 32.1, certifications: ['ISO 9001'] },
+  { id: 's1', name: 'Eco-Dynamics Ltd', category: 'Raw Materials', sustainabilityScore: 88, carbonEfficiency: 12.5, certifications: ['ISO 14001', 'LEED'], location: 'Berlin, Germany', coordinates: { lat: 52.52, lng: 13.405 } },
+  { id: 's2', name: 'Global Logistics Corp', category: 'Packaging', sustainabilityScore: 45, carbonEfficiency: 48.2, certifications: [], location: 'Shanghai, China', coordinates: { lat: 31.23, lng: 121.47 } },
+  { id: 's3', name: 'GreenSource Solutions', category: 'Raw Materials', sustainabilityScore: 92, carbonEfficiency: 8.4, certifications: ['B-Corp', 'Carbon Trust'], location: 'San Francisco, USA', coordinates: { lat: 37.77, lng: -122.41 } },
+  { id: 's4', name: 'Standard Parts Inc', category: 'Components', sustainabilityScore: 62, carbonEfficiency: 32.1, certifications: ['ISO 9001'], location: 'Mumbai, India', coordinates: { lat: 19.07, lng: 72.87 } },
 ];
 
 export const INITIAL_MATERIALS: Material[] = [

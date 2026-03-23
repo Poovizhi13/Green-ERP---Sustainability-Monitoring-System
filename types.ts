@@ -18,6 +18,11 @@ export interface Supplier {
   sustainabilityScore: number; // 0-100
   carbonEfficiency: number; // kg CO2 per $1000
   certifications: string[];
+  location: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface Material {

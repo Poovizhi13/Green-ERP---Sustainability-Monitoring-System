@@ -22,6 +22,7 @@ const MasterData: React.FC<MasterDataProps> = ({ suppliers, materials, onSupplie
           name: editingItem.name || '',
           category: editingItem.category || '',
           score: editingItem.sustainabilityScore ?? '',
+          location: editingItem.location || '',
           unit: editingItem.unit || 'kg',
           carbon: editingItem.carbonFactor ?? '',
           recyclability: editingItem.recyclabilityRate ?? '',
@@ -29,7 +30,7 @@ const MasterData: React.FC<MasterDataProps> = ({ suppliers, materials, onSupplie
         });
       } else {
         setFormFields({
-          name: '', category: '', score: '', unit: 'kg', carbon: '', recyclability: '', price: ''
+          name: '', category: '', score: '', location: '', unit: 'kg', carbon: '', recyclability: '', price: ''
         });
       }
     }
@@ -49,8 +50,10 @@ const MasterData: React.FC<MasterDataProps> = ({ suppliers, materials, onSupplie
         name: formFields.name,
         category: formFields.category,
         sustainabilityScore: Number(formFields.score),
+        location: formFields.location,
         carbonEfficiency: editingItem?.carbonEfficiency || 0,
-        certifications: []
+        certifications: editingItem?.certifications || [],
+        coordinates: editingItem?.coordinates
       }, mode);
     } else {
       onMaterialAction({
@@ -151,6 +154,12 @@ const MasterData: React.FC<MasterDataProps> = ({ suppliers, materials, onSupplie
                   <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Business Category</label>
                   <input name="category" value={formFields.category} onChange={handleInputChange} required className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold" />
                 </div>
+                {activeSubTab === 'suppliers' && (
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Global Location</label>
+                    <input name="location" value={formFields.location} onChange={handleInputChange} required className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold" placeholder="e.g. London, UK" />
+                  </div>
+                )}
                 {activeSubTab === 'suppliers' ? (
                   <div className="space-y-2">
                     <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Sustainability Score (%)</label>
