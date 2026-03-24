@@ -66,6 +66,27 @@ export const getSustainabilityAdvice = async (
   }
 };
 
+export const getSustainabilityTip = async () => {
+  const model = "gemini-3.1-pro-preview";
+  
+  const prompt = "Provide a single, concise, and high-impact sustainability tip for a large enterprise. Focus on energy, supply chain, or circular economy. Max 20 words.";
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: [{ parts: [{ text: prompt }] }],
+      config: {
+        temperature: 0.9,
+      },
+    });
+
+    return response.text?.trim() || "Switching to LED lighting can reduce energy consumption by up to 75%.";
+  } catch (error) {
+    console.error("Gemini Tip Error:", error);
+    return "Optimizing logistics routes can significantly reduce fuel consumption and carbon emissions.";
+  }
+};
+
 export const getGeospatialInsights = async (suppliers: Supplier[]) => {
   const model = "gemini-3.1-pro-preview";
   

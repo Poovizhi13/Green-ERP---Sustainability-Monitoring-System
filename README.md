@@ -17,18 +17,6 @@
 * **Gemini 3.1 Integration:** A conversational expert that analyzes your specific data to provide tailored reduction strategies.
 * **Context-Aware:** Understands your unique suppliers and materials to give precise advice.
 
-### 🧪 Scenario Simulator ("What-If" Analysis)
-* **Strategy Modeling:** Test the impact of energy reductions or material switches before implementation.
-* **Financial Trade-offs:** See the projected cost impact alongside carbon savings.
-
-### 🔮 Carbon Forecasting
-* **Predictive Trajectory:** 6-month AI-driven forecasts to proactively manage environmental targets.
-* **Confidence Intervals:** Statistical certainty levels for future projections.
-
-### 🗺️ Geospatial Supply Chain Map
-* **Global Visualization:** Interactive map plotting all vendors with ESG color-coding.
-* **Logistics Analysis:** Identify transport-related carbon risks and local sourcing opportunities.
-
 ### 📝 Executive Reporting
 * **Audit-Ready Reports:** Automated generation of sustainability summaries.
 * **Live Preview:** Real-time document preview before exporting to `.txt` format.

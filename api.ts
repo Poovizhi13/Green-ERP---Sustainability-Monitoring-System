@@ -74,6 +74,46 @@ class SustainabilityApi {
     this.saveDb(db);
   }
 
+  async updateUser(user: User): Promise<void> {
+    await this.simulateLatency();
+    const db = this.getDb();
+    db.users = db.users.map((u: User) => u.id === user.id ? user : u);
+    this.saveDb(db);
+  }
+
+  // --- SETTINGS ---
+  async getSettings(): Promise<any> {
+    await this.simulateLatency();
+    const db = this.getDb();
+    return db.settings || { carbonThreshold: 5000, notifications: true };
+  }
+
+  async saveSettings(settings: any): Promise<void> {
+    await this.simulateLatency();
+    const db = this.getDb();
+    db.settings = settings;
+    this.saveDb(db);
+  }
+
+  async resetSettings(): Promise<any> {
+    await this.simulateLatency();
+    const defaultSettings = { carbonThreshold: 5000, notifications: true };
+    const db = this.getDb();
+    db.settings = defaultSettings;
+    this.saveDb(db);
+    return defaultSettings;
+  }
+
+  async purgeCache(): Promise<void> {
+    await this.simulateLatency();
+    // Simulate clearing local storage items that aren't the main DB
+    Object.keys(localStorage).forEach(key => {
+      if (key !== 'green_erp_db' && key.startsWith('green_erp_')) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
+
   // --- MASTER DATA ---
   async getSuppliers(): Promise<Supplier[]> {
     await this.simulateLatency();
