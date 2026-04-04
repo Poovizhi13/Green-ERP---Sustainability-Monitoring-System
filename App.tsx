@@ -304,11 +304,11 @@ End of Report.
           <div className="absolute top-0 left-0 w-full h-1.5 bg-emerald-500"></div>
           
           <div className="text-center mb-10">
-            <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-              <Leaf className="w-8 h-8" />
+            <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <Leaf className="w-10 h-10" />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Green ERP</h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-1.5 font-bold uppercase tracking-widest text-[9px]">Strategic Sustainability Suite</p>
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Green ERP</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 font-black uppercase tracking-widest text-xs">Strategic Sustainability Suite</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
@@ -333,10 +333,10 @@ End of Report.
               </select>
             </div>
 
-            <button type="submit" disabled={isSyncing} className="w-full bg-slate-900 dark:bg-emerald-600 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:opacity-90 transition-all shadow-xl shadow-slate-900/10 dark:shadow-emerald-500/20 flex items-center justify-center gap-3 disabled:opacity-50 active:scale-[0.98]">
-              {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+            <button type="submit" disabled={isSyncing} className="w-full bg-slate-900 dark:bg-emerald-600 text-white py-5 rounded-xl font-black uppercase tracking-widest text-xs hover:opacity-90 transition-all shadow-xl shadow-slate-900/10 dark:shadow-emerald-500/20 flex items-center justify-center gap-3 disabled:opacity-50 active:scale-[0.98]">
+              {isSyncing ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShieldCheck className="w-5 h-5" />}
               {isSyncing ? 'Authenticating...' : 'Access Terminal'}
-              {!isSyncing && <ArrowRight className="w-4 h-4" />}
+              {!isSyncing && <ArrowRight className="w-5 h-5" />}
             </button>
           </form>
           

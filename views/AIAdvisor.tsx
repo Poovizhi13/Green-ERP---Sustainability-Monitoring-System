@@ -169,12 +169,12 @@ const AIAdvisor: React.FC<AIAdvisorProps> = ({ suppliers, materials, procurement
             <BrainCircuit className="text-white w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight leading-none">
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-none">
               Strategic Advisor
             </h2>
             <div className="flex items-center gap-2 mt-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Intelligence Active • v3.1</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Intelligence Active • v3.1</span>
             </div>
           </div>
         </div>
@@ -265,11 +265,11 @@ const AIAdvisor: React.FC<AIAdvisorProps> = ({ suppliers, materials, procurement
                         {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
                       </button>
                     )}
-                    <div className={`prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-p:leading-relaxed prose-strong:text-emerald-500 prose-sm ${msg.role === 'user' ? 'prose-p:text-white' : ''}`}>
+                    <div className={`prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-p:leading-relaxed prose-strong:text-emerald-500 prose-base ${msg.role === 'user' ? 'prose-p:text-white' : ''}`}>
                       <ReactMarkdown>{msg.content}</ReactMarkdown>
                     </div>
                     <div className={`flex items-center gap-2 mt-4 opacity-30 ${msg.role === 'user' ? 'justify-end' : ''}`}>
-                      <span className="text-[8px] font-bold uppercase tracking-widest">
+                      <span className="text-[10px] font-bold uppercase tracking-widest">
                         {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -353,12 +353,12 @@ const AIAdvisor: React.FC<AIAdvisorProps> = ({ suppliers, materials, procurement
                       <div className={`p-2 rounded-xl bg-${stat.color}-500/10 text-${stat.color}-500 shadow-sm`}>
                         <stat.icon className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400">{stat.label}</span>
+                      <span className="text-xs font-bold text-slate-600 dark:text-slate-400">{stat.label}</span>
                     </div>
-                    <span className="text-[9px] font-black text-slate-400 uppercase">{stat.trend}</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase">{stat.trend}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className={`text-base font-black text-${stat.color}-500`}>{stat.value}</span>
+                    <span className={`text-lg font-black text-${stat.color}-500`}>{stat.value}</span>
                     <div className="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                       <div className={`h-full bg-${stat.color}-500 w-2/3 rounded-full`} />
                     </div>

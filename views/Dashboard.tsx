@@ -97,24 +97,24 @@ const Dashboard: React.FC<DashboardProps> = ({ suppliers, materials, procurement
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Executive Dashboard</h2>
-            <div className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 text-[9px] font-bold uppercase rounded-md border border-emerald-500/20 flex items-center gap-1.5">
-              <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
+            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Executive Dashboard</h2>
+            <div className="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase rounded-md border border-emerald-500/20 flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
               Live Sync
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-tight">Environmental impact monitoring for {currentUser.username}.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-bold tracking-tight">Environmental impact monitoring for {currentUser.username}.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => setShowLogic(!showLogic)}
-            className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all flex items-center gap-2"
+            className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all flex items-center gap-2"
           >
-            <Calculator className="w-3.5 h-3.5" />
+            <Calculator className="w-4 h-4" />
             {showLogic ? 'Hide Logic' : 'Logic'}
           </button>
-          <button onClick={handleExport} disabled={isExporting} className="bg-slate-900 dark:bg-emerald-600 text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2 shadow-sm">
-            {isExporting ? <Download className="w-3.5 h-3.5 animate-bounce" /> : <Download className="w-3.5 h-3.5" />}
+          <button onClick={handleExport} disabled={isExporting} className="bg-slate-900 dark:bg-emerald-600 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2 shadow-sm">
+            {isExporting ? <Download className="w-4 h-4 animate-bounce" /> : <Download className="w-4 h-4" />}
             Export
           </button>
         </div>

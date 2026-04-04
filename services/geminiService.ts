@@ -2,8 +2,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { Supplier, Material, ProcurementRecord, EnergyRecord } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
-
 export const getSustainabilityAdvice = async (
   suppliers: Supplier[],
   materials: Material[],
@@ -11,8 +9,16 @@ export const getSustainabilityAdvice = async (
   energy: EnergyRecord[],
   userQuery?: string
 ) => {
-  const model = "gemini-3.1-pro-preview";
+  const model = "gemini-3-flash-preview";
+  console.log(`[Gemini] Calling model: ${model}`);
   
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  if (!apiKey) {
+    console.error("Gemini API Key is missing. Please check your environment variables.");
+    return "Error: Gemini API Key is missing. Please configure it in the settings.";
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
   const systemInstruction = `
     You are an expert Sustainability Consultant for a Green ERP system. 
     Your goal is to analyze procurement and energy data to provide actionable, high-impact strategies for reducing carbon footprint and improving ESG scores.
@@ -67,8 +73,13 @@ export const getSustainabilityAdvice = async (
 };
 
 export const getSustainabilityTip = async () => {
-  const model = "gemini-3.1-pro-preview";
+  const model = "gemini-3-flash-preview";
+  console.log(`[Gemini] Calling model: ${model}`);
   
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  if (!apiKey) return "Optimizing logistics routes can significantly reduce fuel consumption and carbon emissions.";
+
+  const ai = new GoogleGenAI({ apiKey });
   const prompt = "Provide a single, concise, and high-impact sustainability tip for a large enterprise. Focus on energy, supply chain, or circular economy. Max 20 words.";
 
   try {
@@ -88,8 +99,13 @@ export const getSustainabilityTip = async () => {
 };
 
 export const getGeospatialInsights = async (suppliers: Supplier[]) => {
-  const model = "gemini-3.1-pro-preview";
+  const model = "gemini-3-flash-preview";
+  console.log(`[Gemini] Calling model: ${model}`);
   
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  if (!apiKey) return "Error: Gemini API Key is missing.";
+
+  const ai = new GoogleGenAI({ apiKey });
   const systemInstruction = `
     You are a Logistics and Sustainability Expert. 
     Analyze the geographical distribution of suppliers and provide insights on:
@@ -127,8 +143,13 @@ export const getCarbonForecast = async (
   energy: EnergyRecord[],
   materials: Material[]
 ) => {
-  const model = "gemini-3.1-pro-preview";
+  const model = "gemini-3-flash-preview";
+  console.log(`[Gemini] Calling model: ${model}`);
   
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  if (!apiKey) return { forecastData: [], insights: "Error: Gemini API Key is missing.", confidence: 0 };
+
+  const ai = new GoogleGenAI({ apiKey });
   const systemInstruction = `
     You are a Data Scientist and Sustainability Analyst.
     Based on historical procurement and energy data, predict carbon emissions for the next 6 months.
@@ -183,8 +204,13 @@ export const runSustainabilitySimulation = async (
     newSupplierId?: string;
   }
 ) => {
-  const model = "gemini-3.1-pro-preview";
+  const model = "gemini-3-flash-preview";
+  console.log(`[Gemini] Calling model: ${model}`);
   
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  if (!apiKey) return { currentCarbon: 0, simulatedCarbon: 0, carbonReduction: 0, costImpact: 0, esgImpact: 0, strategicAnalysis: "Error: Gemini API Key is missing." };
+
+  const ai = new GoogleGenAI({ apiKey });
   const systemInstruction = `
     You are a Sustainability Strategy Consultant.
     Given the current enterprise data and a proposed "What-If" scenario, calculate the potential impact.

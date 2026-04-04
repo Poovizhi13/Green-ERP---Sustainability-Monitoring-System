@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, setActiveTab,
             Green ERP
           </h1>
         </div>
-        <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] font-bold">Enterprise Intelligence</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] font-black">Enterprise Intelligence</p>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-4">
@@ -72,8 +72,8 @@ const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, setActiveTab,
                   className="absolute left-0 w-1 h-6 bg-emerald-600 rounded-r-full"
                 />
               )}
-              <item.icon className={`w-4 h-4 transition-colors ${activeTab === item.id ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 group-hover:text-emerald-500'}`} />
-              <span className="text-sm font-semibold">{item.label}</span>
+              <item.icon className={`w-5 h-5 transition-colors ${activeTab === item.id ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 group-hover:text-emerald-500'}`} />
+              <span className="text-base font-bold">{item.label}</span>
             </button>
           ))}
         </div>
@@ -99,10 +99,10 @@ const Sidebar: React.FC<SidebarProps> = ({ currentRole, activeTab, setActiveTab,
               {currentRole.charAt(0)}
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{currentRole.replace('_', ' ')}</p>
+              <p className="text-sm font-black text-slate-900 dark:text-white truncate">{currentRole.replace('_', ' ')}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Online</span>
+                <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Online</span>
               </div>
             </div>
           </div>
