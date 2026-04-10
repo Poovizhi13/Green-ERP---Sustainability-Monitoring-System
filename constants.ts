@@ -12,6 +12,7 @@ export const INITIAL_SUPPLIERS: Supplier[] = [
   { id: 's2', name: 'Global Logistics Corp', category: 'Packaging', sustainabilityScore: 45, carbonEfficiency: 48.2, certifications: [], location: 'Shanghai, China', coordinates: { lat: 31.23, lng: 121.47 } },
   { id: 's3', name: 'GreenSource Solutions', category: 'Raw Materials', sustainabilityScore: 92, carbonEfficiency: 8.4, certifications: ['B-Corp', 'Carbon Trust'], location: 'San Francisco, USA', coordinates: { lat: 37.77, lng: -122.41 } },
   { id: 's4', name: 'Standard Parts Inc', category: 'Components', sustainabilityScore: 62, carbonEfficiency: 32.1, certifications: ['ISO 9001'], location: 'Mumbai, India', coordinates: { lat: 19.07, lng: 72.87 } },
+  { id: 's5', name: 'EcoPack Solutions', category: 'Packaging', sustainabilityScore: 85, carbonEfficiency: 15.2, certifications: ['FSC', 'ISO 14001'], location: 'Stockholm, Sweden', coordinates: { lat: 59.32, lng: 18.06 } },
 ];
 
 export const INITIAL_MATERIALS: Material[] = [
@@ -19,12 +20,14 @@ export const INITIAL_MATERIALS: Material[] = [
   { id: 'm2', name: 'Virgin Aluminum', category: 'Metals', unit: 'kg', carbonFactor: 12.4, recyclabilityRate: 40, averagePrice: 3.8 },
   { id: 'm3', name: 'Biodegradable Plastic', category: 'Polymers', unit: 'kg', carbonFactor: 1.2, recyclabilityRate: 80, averagePrice: 2.1 },
   { id: 'm4', name: 'Standard PVC', category: 'Polymers', unit: 'kg', carbonFactor: 5.8, recyclabilityRate: 15, averagePrice: 1.4 },
+  { id: 'm5', name: 'High-Impact Polystyrene', category: 'Polymers', unit: 'kg', carbonFactor: 11.2, recyclabilityRate: 10, averagePrice: 1.8 },
 ];
 
 export const INITIAL_PROCUREMENT: ProcurementRecord[] = [
   { id: 'p1', date: '2023-10-01', materialId: 'm2', supplierId: 's2', quantity: 500, totalCost: 1900 },
   { id: 'p2', date: '2023-10-05', materialId: 'm3', supplierId: 's1', quantity: 1200, totalCost: 2520 },
   { id: 'p3', date: '2023-10-12', materialId: 'm1', supplierId: 's3', quantity: 800, totalCost: 3600 },
+  { id: 'p4', date: '2023-11-01', materialId: 'm5', supplierId: 's2', quantity: 300, totalCost: 540 },
 ];
 
 export const INITIAL_ENERGY: EnergyRecord[] = [

@@ -426,6 +426,28 @@ const Settings: React.FC<SettingsProps> = ({ currentUser, theme, onToggleTheme, 
                           Reset
                         </button>
                       </div>
+
+                      <div className="p-6 bg-amber-500/5 rounded-3xl border border-amber-500/10 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 bg-amber-500/10 rounded-2xl">
+                            <Database className="w-5 h-5 text-amber-500" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-amber-600">Reset Database</p>
+                            <p className="text-[10px] text-amber-600/60 font-bold uppercase tracking-widest">Restore all ERP records to initial state</p>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={async () => {
+                            if (window.confirm("This will delete all your current records and restore initial demo data. Continue?")) {
+                              await api.resetDatabase();
+                            }
+                          }}
+                          className="px-4 py-2 bg-amber-500 text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-amber-600 transition-all"
+                        >
+                          Reset DB
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}

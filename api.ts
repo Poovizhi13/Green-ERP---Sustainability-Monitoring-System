@@ -114,6 +114,12 @@ class SustainabilityApi {
     });
   }
 
+  async resetDatabase(): Promise<void> {
+    await this.simulateLatency();
+    localStorage.removeItem(this.storageKey);
+    window.location.reload();
+  }
+
   // --- MASTER DATA ---
   async getSuppliers(): Promise<Supplier[]> {
     await this.simulateLatency();

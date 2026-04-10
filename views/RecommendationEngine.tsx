@@ -87,8 +87,16 @@ const RecommendationEngine: React.FC<RecommendationEngineProps> = ({ suppliers, 
         energy={energy} 
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {recommendations.length > 0 ? recommendations.map(rec => {
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center">
+            <Lightbulb className="w-5 h-5 text-amber-500" />
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">Algorithmic Suggestions</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recommendations.length > 0 ? recommendations.map(rec => {
           const isApplied = applied.includes(rec.id);
           return (
             <div key={rec.id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm flex flex-col group relative overflow-hidden hover:border-emerald-500/30 transition-all">
@@ -134,6 +142,7 @@ const RecommendationEngine: React.FC<RecommendationEngineProps> = ({ suppliers, 
              <p className="text-slate-400 font-medium mt-2">All current procurement matches best-available sustainability standards.</p>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

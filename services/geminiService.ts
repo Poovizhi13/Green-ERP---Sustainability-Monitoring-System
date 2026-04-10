@@ -58,7 +58,7 @@ export const getSustainabilityAdvice = async (
   try {
     const response = await ai.models.generateContent({
       model,
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: prompt,
       config: {
         systemInstruction,
         temperature: 0.7,
@@ -68,7 +68,8 @@ export const getSustainabilityAdvice = async (
     return response.text || "I'm sorry, I couldn't generate advice at this time.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "Error generating AI suggestions. Please check your API configuration.";
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return `Error generating AI suggestions: ${errorMessage}. Please check your API configuration.`;
   }
 };
 
@@ -85,7 +86,7 @@ export const getSustainabilityTip = async () => {
   try {
     const response = await ai.models.generateContent({
       model,
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: prompt,
       config: {
         temperature: 0.9,
       },
@@ -124,7 +125,7 @@ export const getGeospatialInsights = async (suppliers: Supplier[]) => {
   try {
     const response = await ai.models.generateContent({
       model,
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: prompt,
       config: {
         systemInstruction,
         tools: [{ googleSearch: {} }], // Using googleSearch for grounding as per guidelines for general web info
@@ -134,7 +135,8 @@ export const getGeospatialInsights = async (suppliers: Supplier[]) => {
     return response.text || "No geospatial insights available.";
   } catch (error) {
     console.error("Geospatial AI Error:", error);
-    return "Error generating geospatial insights.";
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return `Error generating geospatial insights: ${errorMessage}`;
   }
 };
 
@@ -171,7 +173,7 @@ export const getCarbonForecast = async (
   try {
     const response = await ai.models.generateContent({
       model,
-      contents: [{ parts: [{ text: `Predict the next 6 months of carbon emissions based on this data: ${JSON.stringify(dataContext)}` }] }],
+      contents: `Predict the next 6 months of carbon emissions based on this data: ${JSON.stringify(dataContext)}`,
       config: {
         systemInstruction,
         responseMimeType: "application/json",
@@ -181,9 +183,10 @@ export const getCarbonForecast = async (
     return JSON.parse(response.text || "{}");
   } catch (error) {
     console.error("Forecasting AI Error:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       forecastData: [],
-      insights: "Error generating forecast.",
+      insights: `Error generating forecast: ${errorMessage}`,
       confidence: 0
     };
   }
@@ -229,12 +232,8 @@ export const runSustainabilitySimulation = async (
   try {
     const response = await ai.models.generateContent({
       model,
-      contents: [{ 
-        parts: [{ 
-          text: `Run a sustainability simulation with these parameters: ${JSON.stringify(params)} 
-                 based on this current data: ${JSON.stringify(currentData)}` 
-        }] 
-      }],
+      contents: `Run a sustainability simulation with these parameters: ${JSON.stringify(params)} 
+                 based on this current data: ${JSON.stringify(currentData)}`,
       config: {
         systemInstruction,
         responseMimeType: "application/json",
@@ -244,13 +243,14 @@ export const runSustainabilitySimulation = async (
     return JSON.parse(response.text || "{}");
   } catch (error) {
     console.error("Simulation AI Error:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       currentCarbon: 0,
       simulatedCarbon: 0,
       carbonReduction: 0,
       costImpact: 0,
       esgImpact: 0,
-      strategicAnalysis: "Error running simulation."
+      strategicAnalysis: `Error running simulation: ${errorMessage}`
     };
   }
 };
